@@ -1,0 +1,96 @@
+/* =========================
+   HEADER
+   ========================= */
+   header {
+    background-color: var(--color-primary);
+    color: white;
+    padding: var(--space-lg);
+    text-align: center;
+  }
+  
+  /* =========================
+     HERO SECTION
+     ========================= */
+  .hero {
+    padding: var(--space-xl) var(--space-lg);
+    text-align: center;
+  }
+  
+  .hero h1 {
+    margin-bottom: var(--space-md);
+  }
+  
+  .hero p {
+    color: var(--color-text-muted);
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  /* =========================
+     BUTTONS
+     ========================= */
+  .button-primary {
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: white;
+    padding: var(--space-sm) var(--space-md);
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    transition: all 0.2s ease;
+  }
+  
+  .button-primary:hover {
+    background-color: var(--color-accent);
+    color: var(--color-text);
+  }
+  
+  /* =========================
+     SECTIONS
+     ========================= */
+  section {
+    padding: var(--space-xl) var(--space-lg);
+  }
+  
+  /* =========================
+     FOOTER
+     ========================= */
+  footer {
+    background-color: var(--color-primary);
+    color: white;
+    padding: var(--space-lg);
+    text-align: center;
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+
+    header {
+      padding: var(--space-md);
+    }
+  
+    .hero {
+      padding: var(--space-lg) var(--space-md);
+    }
+  
+    h1 {
+      font-size: 2rem;
+    }
+  
+    h2 {
+      font-size: 1.6rem;
+    }
+  
+    p {
+      font-size: 1rem;
+    }
+  
+    section {
+      padding: var(--space-lg) var(--space-md);
+    }
+  
+    .button-primary {
+      padding: var(--space-sm) var(--space-lg);
+      display: inline-block;
+    }
+  }
+  

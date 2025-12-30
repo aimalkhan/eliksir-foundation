@@ -1,0 +1,16 @@
+{
+  "name": "eliksir-website",
+  "version": "1.0.0",
+  "description": "A simple one-page website for the Eliksir Foundation.",
+  "main": "src/index.html",
+  "scripts": {
+    "start": "live-server src",
+    "build": "echo 'Build process not defined yet.'"
+  },
+  "author": "Eliksir Foundation",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {
+    "live-server": "^1.2.1"
+  }
+}

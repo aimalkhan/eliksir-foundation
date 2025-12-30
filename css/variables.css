@@ -1,0 +1,44 @@
+@font-face {
+  font-family: "Akira";
+  src: url("../assets/fonts/Akira-Regular.woff2") format("woff2"),
+       url("../assets/fonts/Akira-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* =========================
+     BRAND COLORS (ELIKSIR)
+     ========================= */
+  --color-primary: #1F4FD8;   /* Medium Blue */
+  --color-accent: #F2B705;    /* Sunflower Gold */
+  --color-bg: #FFFFFF;
+  --color-text: #0F172A;
+  --color-text-muted: #6B7280;
+
+  /* =========================
+     TYPOGRAPHY
+     ========================= */
+  --font-display: "Akira", "Poppins", system-ui, sans-serif;
+  --font-body: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --font-size-base: 16px;
+  --line-height-base: 1.6;
+
+  /* =========================
+     SPACING SCALE
+     ========================= */
+  --space-xs: 0.5rem;   /* 8px */
+  --space-sm: 1rem;     /* 16px */
+  --space-md: 1.5rem;   /* 24px */
+  --space-lg: 2.5rem;   /* 40px */
+  --space-xl: 4rem;     /* 64px */
+
+  /* =========================
+     UI SHAPE
+     ========================= */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}

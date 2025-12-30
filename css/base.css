@@ -1,0 +1,61 @@
+/* =========================
+   RESET & BOX MODEL
+   ========================= */
+   *,
+   *::before,
+   *::after {
+     box-sizing: border-box;
+     margin: 0;
+     padding: 0;
+   }
+   
+   /* =========================
+      DOCUMENT BASE
+      ========================= */
+   html {
+     font-size: var(--font-size-base);
+   }
+   
+   body {
+     font-family: var(--font-body);
+     line-height: var(--line-height-base);
+     color: var(--color-text);
+     background-color: var(--color-bg);
+   }
+   
+   /* =========================
+      TYPOGRAPHY
+      ========================= */
+   h1, h2, h3, h4, h5, h6 {
+     font-family: var(--font-display);
+     color: var(--color-primary);
+     letter-spacing: 0.02em;
+     margin-bottom: var(--space-sm);
+   }
+   
+   p {
+     margin: var(--space-sm) 0;
+     color: var(--color-text);
+   }
+   
+   /* =========================
+      LINKS
+      ========================= */
+   a {
+     color: var(--color-primary);
+     text-decoration: none;
+   }
+   
+   a:hover {
+     color: var(--color-accent);
+     text-decoration: underline;
+   }
+   
+   /* =========================
+      LISTS
+      ========================= */
+   ul {
+     list-style-position: inside;
+     margin: var(--space-sm) 0;
+   }
+   
