@@ -1,29 +1,87 @@
 /* =========================
    HEADER
    ========================= */
-   header {
-    background-color: var(--color-primary);
-    color: white;
-    padding: var(--space-lg);
-    text-align: center;
+   .site-header {
+    background: var(--color-bg);
+    border-bottom: 1px solid rgba(31, 79, 216, 0.08);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  
+  .header-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--space-sm) var(--space-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .logo {
+    height: 48px;
+  }
+  
+  .nav a {
+    margin-left: var(--space-md);
+    font-weight: 500;
   }
   
   /* =========================
-     HERO SECTION
+     HERO
      ========================= */
   .hero {
-    padding: var(--space-xl) var(--space-lg);
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     text-align: center;
+    padding: var(--space-xl) var(--space-lg);
+    gap: var(--space-md);
   }
   
   .hero h1 {
-    margin-bottom: var(--space-md);
+    font-size: 2.8rem;
+    max-width: 900px;
   }
   
   .hero p {
-    color: var(--color-text-muted);
     max-width: 700px;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-lg);
+  }
+  
+  /* =========================
+     SECTIONS (SPA STACK)
+     ========================= */
+  .section {
+    padding: var(--space-xl) var(--space-lg);
+    max-width: 900px;
     margin: 0 auto;
+  }
+  
+  .section-light {
+    background-color: var(--color-bg);
+  }
+  
+  .section-muted {
+    background-color: #F8FAFF;
+  }
+  
+  .section-accent {
+    background-color: var(--color-primary);
+    color: white;
+    text-align: center;
+  }
+  
+  .section-accent h2,
+  .section-accent p {
+    color: white;
+  }
+  
+  .section + .section {
+    border-top: 1px solid rgba(31, 79, 216, 0.08);
   }
   
   /* =========================
@@ -44,53 +102,22 @@
     color: var(--color-text);
   }
   
-  /* =========================
-     SECTIONS
-     ========================= */
-  section {
-    padding: var(--space-xl) var(--space-lg);
+  .button-invert {
+    background-color: var(--color-accent);
+    color: var(--color-text);
+  }
+  
+  .button-invert:hover {
+    background-color: white;
   }
   
   /* =========================
      FOOTER
      ========================= */
-  footer {
-    background-color: var(--color-primary);
-    color: white;
+  .site-footer {
     padding: var(--space-lg);
     text-align: center;
-    font-size: 0.9rem;
-  }
-
-  @media (max-width: 768px) {
-
-    header {
-      padding: var(--space-md);
-    }
-  
-    .hero {
-      padding: var(--space-lg) var(--space-md);
-    }
-  
-    h1 {
-      font-size: 2rem;
-    }
-  
-    h2 {
-      font-size: 1.6rem;
-    }
-  
-    p {
-      font-size: 1rem;
-    }
-  
-    section {
-      padding: var(--space-lg) var(--space-md);
-    }
-  
-    .button-primary {
-      padding: var(--space-sm) var(--space-lg);
-      display: inline-block;
-    }
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
   }
   
