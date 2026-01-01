@@ -1,0 +1,12 @@
+# macOS System Files (Targeted everywhere)
+**/.DS_Store
+**/.AppleDouble
+**/.LSOverride
+
+# Thumbnails
+**/._*
+
+# Directories (Targeted everywhere)
+**/node_modules/
+**/.TemporaryItems/
+**/.Trashes/
