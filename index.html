@@ -1,232 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Eliksir Foundation</title>
-    <link rel="stylesheet" href="css/variables.css">
-    <link rel="stylesheet" href="css/base.css" >
-    <link rel="stylesheet" href="css/main.css" >
-</head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Eliksir Foundation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFF6EB;
+    --ink:#221A3D;
+    --ink-soft:#564C74;
+    --indigo:#3B14BA;
+    --indigo-deep:#26107D;
+    --gold:#EAB236;
+  }
+  *{box-sizing:border-box;}
+  html,body{height:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Karla',sans-serif;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  .stage{
+    width:100%;
+    height:100vh;
+    height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:24px;
+    position:relative;
+  }
+  .rings{
+    position:absolute;
+    top:50%; left:50%;
+    width:min(72vh,72vw);
+    height:min(72vh,72vw);
+    transform:translate(-50%,-50%);
+    fill:none;
+    stroke:var(--indigo);
+    stroke-width:1;
+    opacity:0.16;
+    pointer-events:none;
+  }
+  .content{
+    position:relative;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:clamp(18px,3vh,32px);
+    max-width:520px;
+    animation:rise .7s ease both;
+  }
+  @keyframes rise{
+    from{opacity:0; transform:translateY(10px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  @media (prefers-reduced-motion:reduce){ .content{animation:none;} }
 
+  .logo{
+    width:clamp(56px,10vh,96px);
+    height:auto;
+  }
+  h1{
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    font-size:clamp(1.3rem,2.6vh,1.7rem);
+    line-height:1.3;
+    margin:0;
+    color:var(--indigo-deep);
+  }
+  p{
+    margin:0;
+    color:var(--ink-soft);
+    font-size:clamp(0.95rem,1.9vh,1.05rem);
+    line-height:1.55;
+  }
+  .links{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    margin-top:6px;
+  }
+  .ig-link{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    text-decoration:none;
+    color:#fff;
+    background:var(--indigo);
+    padding:12px 26px;
+    border-radius:999px;
+    font-size:0.95rem;
+    font-weight:600;
+    border:1px solid var(--indigo);
+    transition:background .2s ease;
+  }
+  .ig-link:hover{background:var(--indigo-deep); border-color:var(--indigo-deep);}
+  .ig-link svg{width:17px; height:17px;}
+  .wa-link{
+    background:#25D366;
+    border-color:#25D366;
+    color:#0B2E1B;
+  }
+  .wa-link:hover{background:#1FB959; border-color:#1FB959;}
+</style>
+</head>
 <body>
 
-    <header class="site-header">
-      <div class="header-inner">
-        <img src="assets/images/logo-primary.svg" alt="Eliksir Foundation Logo" class="logo">
-    
-        <nav class="nav">
-          <a href="#about">About</a>
-          <a href="#programs">Programs</a>
-          <a href="#impact">Impact</a>
-          <a href="#donate" class="button-primary">Donate</a>
-        </nav>
-      </div>
-    </header>
-    
-    <main>
-    
-      <!-- HERO -->
-      <section id="hero" class="hero">
-        <h1>Nurturing Faith Centred Growth for the Next Generation</h1>
-      
-        <p>
-          Eliksir Foundation is a faith inspired nonprofit dedicated to strengthening
-          Muslim youth, families, and communities through programs rooted in Islamic
-          values, professional excellence, and compassionate service.
-        </p>
-      
-        <div class="hero-actions">
-          <a href="#programs" class="button-primary">
-            Support Our Programs
-          </a>
-        </div>
-      </section>
-    
-      <!-- ABOUT -->
-      <section id="about" class="section section-light">
-        <h2>About Eliksir Foundation</h2>
-      
-        <p>
-          Eliksir Foundation exists to nurture thriving Muslim families and communities
-          through faith centred, inclusive, and transformative programs.
-        </p>
-      
-        <p>
-          Rooted in Islamic values and guided by professional best practices, Eliksir
-          bridges faith, wellness, and education to strengthen relationships, resilience,
-          and a sense of belonging across generations.
-        </p>
-      
-        <p>
-          While our initial focus is on youth development, our mission extends to parents,
-          families, and seniors. We believe that lasting impact is created when individuals
-          are supported within a healthy, connected community ecosystem.
-        </p>
-      
-        <p>
-          Through collaboration with educators, community leaders, and partner
-          organizations, Eliksir is building sustainable systems of care that empower
-          the present generation while laying foundations for those to come.
-        </p>
-      </section>
-    
-      <!-- PROGRAMS -->
-      <section id="programs" class="section section-muted">
-        <h2>Our Programs</h2>
-      
-        <p>
-          Eliksir Foundation delivers faith inspired programs designed to strengthen
-          individuals and families within a connected community ecosystem. Our initiatives
-          integrate spiritual growth, education, and wellbeing to create lasting impact
-          across generations.
-        </p>
-      
-        <h3>Youth Development</h3>
-        <p>
-          Our youth programs focus on leadership, mentorship, and spiritual grounding.
-          Through immersive experiences and guided learning, we support young people
-          in building confidence, identity, and purpose rooted in faith.
-        </p>
-      
-        <ul>
-          <li>Winter Camp</li>
-          <li>Youth circles and mentorship</li>
-          <li>Leadership and career guidance</li>
-        </ul>
-      
-        <h3>Family Strengthening</h3>
-        <p>
-          Strong families form the foundation of thriving communities. Eliksir supports
-          parents and caregivers through education, relationship-focused programming,
-          and faith-informed guidance for navigating modern challenges.
-        </p>
-      
-        <h3>Senior Engagement</h3>
-        <p>
-          We believe dignity, connection, and belonging must be preserved at every stage
-          of life. Our senior initiatives foster companionship, wellbeing, and meaningful
-          community participation for elders.
-        </p>
-      
-        <h3>Community Outreach</h3>
-        <p>
-          Through partnerships and advocacy, Eliksir collaborates with local organizations
-          and service providers to extend care beyond individual programs, strengthening
-          the wider community ecosystem.
-        </p>
-      </section>
-    
-      <!-- IMPACT -->
-      <section id="impact" class="section section-light">
-        <h2>Our Impact</h2>
-      
-        <p>
-          Eliksir Foundation exists to create positive, lasting change in the lives
-          of individuals and families we serve. Our programs are designed to nurture
-          faith, belonging, and personal growth, strengthening the fabric of the
-          community over time.
-        </p>
-      
-        <h3>Meaningful Experiences</h3>
-        <p>
-          Through thoughtfully designed programs, Eliksir creates spaces where youth,
-          families, and seniors can learn, connect, and grow. Participants engage in
-          experiences that foster confidence, purpose, and a sense of belonging rooted
-          in shared values.
-        </p>
-      
-        <h3>Community Connection</h3>
-        <p>
-          Our work brings people together across generations. By strengthening
-          relationships within families and the wider community, Eliksir helps
-          cultivate environments of care, mutual support, and collective responsibility.
-        </p>
-      
-        <h3>Growth & Reflection</h3>
-        <p>
-          Eliksir remains committed to learning and improvement. We listen to the
-          communities we serve, reflect on our work, and adapt our programs to better
-          meet evolving needs, guided by our values and long term vision.
-        </p>
-      </section>
-      
-    
-      <!-- DONATE -->
-      <section id="donate" class="section section-accent">
-        <h2>Support Our Work</h2>
-      
-        <p>
-          Eliksir Foundation is building long term, faith centred programs that serve
-          youth, families, and communities with care and excellence. Your support
-          enables us to design, deliver, and sustain initiatives rooted in Islamic
-          values and guided by accountability and best practices.
-        </p>
-      
-        <p>
-          Contributions support program delivery, volunteer training, community
-          partnerships, and impact evaluation. As a foundation committed to
-          transparency, Eliksir will share updates and outcomes so our supporters
-          can see the difference their generosity makes.
-        </p>
-      
-        <p>
-          Whether through donations, partnerships, or volunteering, we invite you
-          to be part of a growing ecosystem dedicated to nurturing resilient,
-          connected, and purpose-driven communities.
-        </p>
-      
-        <div class="hero-actions">
-          <a href="#" class="button-primary button-invert">
-            Make a Contribution
-          </a>
-        </div>
-      </section>
-    
-    </main>
-    
-    <footer class="site-footer">
-        <div class="footer-content">
-          <p class="footer-brand">
-            © <span id="year"></span> Eliksir Foundation
-          </p>
-      
-          <nav class="footer-social" aria-label="Social media links">
-            <a
-              href="https://www.instagram.com/eliksirfoundation/"
-              aria-label="Instagram"
-              target="_blank"
-              rel="noopener"
-            >
-              <img src="assets/icons/instagram.svg" alt="" />
-            </a>
-      
-            <a
-              href="https://www.youtube.com/@EliksirFoundation"
-              aria-label="YouTube"
-              target="_blank"
-              rel="noopener"
-            >
-              <img src="assets/icons/youtube.svg" alt="" />
-            </a>
-      
-            <a
-              href="https://www.tiktok.com/@eliksirfoundation"
-              aria-label="TikTok"
-              target="_blank"
-              rel="noopener"
-            >
-              <img src="assets/icons/tiktok.svg" alt="" />
-            </a>
-          </nav>
-        </div>
-      </footer>
-      
-      <script>
-        document.getElementById("year").textContent = new Date().getFullYear();
-      </script>
-      
-    </body>
-    
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="star8" viewBox="0 0 100 100">
+    <path fill="currentColor" d="M50 0 L61 39 L100 50 L61 61 L50 100 L39 61 L0 50 L39 39 Z"/>
+  </symbol>
+</svg>
 
+<div class="stage">
+  <svg class="rings" viewBox="0 0 220 220">
+    <circle cx="110" cy="110" r="108"/>
+    <circle cx="110" cy="110" r="88"/>
+  </svg>
+
+  <div class="content">
+    <img src="assets/icons/logo.png" alt="Eliksir Foundation" class="logo">
+    <h1>Eliksir Foundation</h1>
+    <p>
+      Website is being improved at the moment, follow us on Instagram
+      and join us on WhatsApp to stay connected and up-to-date with our
+      programming and events.
+    </p>
+    <div class="links">
+      <a class="ig-link" href="https://www.instagram.com/eliksirfoundation/" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+          <rect x="3" y="3" width="18" height="18" rx="5"/>
+          <circle cx="12" cy="12" r="4"/>
+          <circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/>
+        </svg>
+        Follow us on Instagram
+      </a>
+      <a class="ig-link wa-link" href="https://chat.whatsapp.com/LD5qbFkEfCp8ayqCMi9exg?mode=gi_t" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.4 1.26 4.83L2 22l5.36-1.4a9.9 9.9 0 0 0 4.68 1.19h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm0 18.2h-.01a8.24 8.24 0 0 1-4.2-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.22 8.22 0 0 1-1.26-4.37c0-4.55 3.7-8.25 8.26-8.25 4.55 0 8.25 3.7 8.25 8.25 0 4.56-3.7 8.24-8.25 8.24zm4.53-6.17c-.25-.12-1.46-.72-1.68-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.79.96-.14.16-.29.18-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.16 0-.43.06-.65.31-.23.25-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.17.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/>
+        </svg>
+        Join us on WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+</body>
 </html>
