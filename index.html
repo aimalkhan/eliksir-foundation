@@ -116,6 +116,25 @@
     color:#0B2E1B;
   }
   .wa-link:hover{background:#1FB959; border-color:#1FB959;}
+  .contact{
+    margin-top:clamp(4px,1.5vh,14px);
+    font-size:clamp(0.9rem,1.8vh,1rem);
+    color:var(--ink-soft);
+    background:rgba(255,255,255,0.6);
+    border:1px solid rgba(59,20,186,0.22);
+    border-radius:16px;
+    padding:clamp(10px,2vh,18px) clamp(18px,4vw,32px);
+    line-height:1.6;
+  }
+  .contact span{
+    display:block;
+    font-family:'Fraunces',serif;
+    font-weight:500;
+    color:var(--indigo-deep);
+    margin-bottom:4px;
+  }
+  .contact a{color:var(--indigo); text-decoration:none; font-weight:600;}
+  .contact a:hover{color:var(--indigo-deep); text-decoration:underline;}
 </style>
 </head>
 <body>
@@ -155,6 +174,12 @@
         </svg>
         Join us on WhatsApp
       </a>
+    </div>
+    <div class="contact">
+      <span>Contact</span>
+      <a href="mailto:info@eliksir.to">info@eliksir.to</a><br>
+      <a href="tel:+14165660404">416-566-0404</a><br>
+      65 Treverton Dr, Scarborough, ON M1K 3S5
     </div>
   </div>
 </div>
