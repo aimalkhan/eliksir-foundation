@@ -4,185 +4,162 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Eliksir Foundation</title>
-<link rel="icon" type="image/png" href="assets/icons/logo.png">
+<meta name="description" content="Eliksir Foundation: community programming and events.">
+<link rel="icon" type="image/png" href="/assets/icons/logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Karla:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --bg:#FFF6EB;
-    --ink:#221A3D;
-    --ink-soft:#564C74;
-    --indigo:#3B14BA;
-    --indigo-deep:#26107D;
-    --gold:#EAB236;
-  }
-  *{box-sizing:border-box;}
-  html,body{height:100%;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--ink);
-    font-family:'Karla',sans-serif;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    overflow:hidden;
-  }
-  .stage{
-    width:100%;
-    height:100vh;
-    height:100svh;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    text-align:center;
-    padding:24px;
-    position:relative;
-  }
-  .rings{
-    position:absolute;
-    top:50%; left:50%;
-    width:min(72vh,72vw);
-    height:min(72vh,72vw);
-    transform:translate(-50%,-50%);
-    fill:none;
-    stroke:var(--indigo);
-    stroke-width:1;
-    opacity:0.16;
-    pointer-events:none;
-  }
-  .content{
-    position:relative;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    gap:clamp(18px,3vh,32px);
-    max-width:520px;
-    animation:rise .7s ease both;
-  }
-  @keyframes rise{
-    from{opacity:0; transform:translateY(10px);}
-    to{opacity:1; transform:translateY(0);}
-  }
-  @media (prefers-reduced-motion:reduce){ .content{animation:none;} }
-
-  .logo{
-    width:clamp(56px,10vh,96px);
-    height:auto;
-  }
-  h1{
-    font-family:'Fraunces',serif;
-    font-weight:500;
-    font-size:clamp(1.3rem,2.6vh,1.7rem);
-    line-height:1.3;
-    margin:0;
-    color:var(--indigo-deep);
-  }
-  p{
-    margin:0;
-    color:var(--ink-soft);
-    font-size:clamp(0.95rem,1.9vh,1.05rem);
-    line-height:1.55;
-  }
-  .links{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    justify-content:center;
-    gap:12px;
-    margin-top:6px;
-  }
-  .ig-link{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    text-decoration:none;
-    color:#fff;
-    background:var(--indigo);
-    padding:12px 26px;
-    border-radius:999px;
-    font-size:0.95rem;
-    font-weight:600;
-    border:1px solid var(--indigo);
-    transition:background .2s ease;
-  }
-  .ig-link:hover{background:var(--indigo-deep); border-color:var(--indigo-deep);}
-  .ig-link svg{width:17px; height:17px;}
-  .wa-link{
-    background:#25D366;
-    border-color:#25D366;
-    color:#0B2E1B;
-  }
-  .wa-link:hover{background:#1FB959; border-color:#1FB959;}
-  .contact{
-    margin-top:clamp(4px,1.5vh,14px);
-    font-size:clamp(0.9rem,1.8vh,1rem);
-    color:var(--ink-soft);
-    background:rgba(255,255,255,0.6);
-    border:1px solid rgba(59,20,186,0.22);
-    border-radius:16px;
-    padding:clamp(10px,2vh,18px) clamp(18px,4vw,32px);
-    line-height:1.6;
-  }
-  .contact span{
-    display:block;
-    font-family:'Fraunces',serif;
-    font-weight:500;
-    color:var(--indigo-deep);
-    margin-bottom:4px;
-  }
-  .contact a{color:var(--indigo); text-decoration:none; font-weight:600;}
-  .contact a:hover{color:var(--indigo-deep); text-decoration:underline;}
-</style>
+<link rel="stylesheet" href="/style.css?v=39b46714">
+<script>document.documentElement.classList.add('js')</script>
 </head>
 <body>
 
-<svg width="0" height="0" style="position:absolute">
-  <symbol id="star8" viewBox="0 0 100 100">
-    <path fill="currentColor" d="M50 0 L61 39 L100 50 L61 61 L50 100 L39 61 L0 50 L39 39 Z"/>
-  </symbol>
-</svg>
-
-<div class="stage">
-  <svg class="rings" viewBox="0 0 220 220">
-    <circle cx="110" cy="110" r="108"/>
-    <circle cx="110" cy="110" r="88"/>
-  </svg>
-
-  <div class="content">
-    <img src="assets/icons/logo.png" alt="Eliksir Foundation" class="logo">
-    <h1>Eliksir Foundation</h1>
-    <p>
-      Website is being improved at the moment, follow us on Instagram
-      and join us on WhatsApp to stay connected and up-to-date with our
-      programming and events.
-    </p>
-    <div class="links">
-      <a class="ig-link" href="https://www.instagram.com/eliksirfoundation/" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
-          <rect x="3" y="3" width="18" height="18" rx="5"/>
-          <circle cx="12" cy="12" r="4"/>
-          <circle cx="17.2" cy="6.8" r="0.6" fill="currentColor"/>
-        </svg>
-        Follow us on Instagram
-      </a>
-      <a class="ig-link wa-link" href="https://chat.whatsapp.com/LD5qbFkEfCp8ayqCMi9exg?mode=gi_t" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.4 1.26 4.83L2 22l5.36-1.4a9.9 9.9 0 0 0 4.68 1.19h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm0 18.2h-.01a8.24 8.24 0 0 1-4.2-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.22 8.22 0 0 1-1.26-4.37c0-4.55 3.7-8.25 8.26-8.25 4.55 0 8.25 3.7 8.25 8.25 0 4.56-3.7 8.24-8.25 8.24zm4.53-6.17c-.25-.12-1.46-.72-1.68-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.79.96-.14.16-.29.18-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.16 0-.43.06-.65.31-.23.25-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.17.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/>
-        </svg>
-        Join us on WhatsApp
-      </a>
-    </div>
-    <div class="contact">
-      <span>Contact</span>
-      <a href="mailto:info@eliksir.to">info@eliksir.to</a><br>
-      <a href="tel:+16477047037">647-704-7037</a><br>
-      65 Treverton Dr, Scarborough, ON M1K 3S5
-    </div>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/assets/icons/logo.png" alt="">Eliksir Foundation</a>
+    <button class="menu-btn" aria-expanded="false" aria-controls="site-nav">Menu</button>
+    <nav id="site-nav" aria-label="Main">
+      <ul>
+        <li><a href="/" aria-current="page">Home</a></li>
+        <li><a href="/about/">About</a></li>
+        <li><a href="/events/">Events</a></li>
+        <li><a href="/get-involved/">Get Involved</a></li>
+        <li><a class="donate" href="https://www.zeffy.com/en-CA/donation-form/general-donation-318" target="_blank" rel="noopener">Donate</a></li>
+      </ul>
+    </nav>
   </div>
-</div>
+</header>
 
+<main>
+  <section class="hero-full">
+    <img class="hero-full-img" src="/assets/images/main-1600.jpg" srcset="/assets/images/main-800.jpg 800w, /assets/images/main-1600.jpg 1600w, /assets/images/main-2400.jpg 2400w" sizes="100vw" alt="A group of brothers sitting in a circle on prayer rugs during a talk" width="2400" height="1596" fetchpriority="high">
+    <div class="hero-full-shade"></div>
+    <div class="wrap hero-full-content">
+      <h1 class="rise">Eliksir Foundation</h1>
+      <p class="lead rise d1">Community programming and events for everyone. Join us, learn with us and help us keep the doors open.</p>
+      <div class="btn-row rise d2">
+        <a class="btn light" href="/events/">See upcoming events</a>
+        <a class="btn gold" href="https://www.zeffy.com/en-CA/donation-form/general-donation-318" target="_blank" rel="noopener">Donate</a>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head"><h2>Coming up</h2><a class="more" href="/events/">All events &rarr;</a></div>
+      
+      <div class="agenda" id="home-upcoming" data-limit="2"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap two-col who">
+      <div class="reveal">
+        <h2>Who we are</h2>
+        <p>Eliksir brings Muslims together to grow in faith and build their community.</p>
+        <p>You might come to us looking for friendship, guidance, or support. Over time, we want to help you offer those things to others, whether as a mentor, contributor, or organizer, or by creating opportunities for the people who come after you.</p>
+        <a class="more" href="/about/">More about us &rarr;</a>
+      </div>
+      <figure class="moment reveal"><img src="/assets/images/moments-meal-1200.jpg" srcset="/assets/images/moments-meal-640.jpg 640w, /assets/images/moments-meal-1200.jpg 1200w" sizes="(max-width: 760px) 92vw, 490px" alt="Brothers sharing pizza together, sitting in a circle on the floor of a prayer room" width="1200" height="901" loading="lazy"></figure>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head"><h2>Every week</h2><a class="more" href="/events/#weekly">All programs &rarr;</a></div>
+      <div class="routine-list" id="program-list" data-brief>
+      <article class="routine">
+        <span class="when">Every Wednesday · After Isha</span>
+        <h3>Captured Thoughts - Shubuhāt: The Fog of the Heart</h3>
+        <p class="meta"><a href="https://www.google.com/maps/search/?api=1&amp;query=Masjid%20Salaam%20-%20160%20Salvation%20Rd%2C%20Brampton%2C%20ON%20L7A%200W7" target="_blank" rel="noopener" title="Open in Google Maps">Masjid Salaam - 160 Salvation Rd, Brampton, ON L7A 0W7</a></p>
+        <div class="routine-body"></div>
+      </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <h2 class="reveal">What we value</h2>
+      <div class="grid">
+        <div class="card help-card reveal"><h3>Grow in faith</h3><p>We pursue Islamic learning that shapes our character, our judgment, and how we live each day.</p></div>
+        <div class="card help-card reveal"><h3>Grow together</h3><p>We build lasting relationships through shared experiences and mutual support, and we will introduce mentorship as our community grows.</p></div>
+        <div class="card help-card reveal"><h3>Build our community</h3><p>We give people real responsibilities, and we will develop the leaders who serve those who come next.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2 class="reveal">Moments from our community</h2>
+      <div class="moments">
+        <figure class="moment reveal" style="--r:0.751"><img src="/assets/images/moments-volleyball-1200.jpg" srcset="/assets/images/moments-volleyball-640.jpg 640w, /assets/images/moments-volleyball-1200.jpg 1200w" sizes="(max-width: 760px) 92vw, 330px" alt="Brothers playing volleyball in a hall with a wooden ceiling" width="1200" height="1598" loading="lazy"></figure>
+        <figure class="moment reveal" style="--r:1.332"><img src="/assets/images/moments-trail-1200.jpg" srcset="/assets/images/moments-trail-640.jpg 640w, /assets/images/moments-trail-1200.jpg 1200w" sizes="(max-width: 760px) 92vw, 330px" alt="Brothers walking together along a sunny trail" width="1200" height="901" loading="lazy"></figure>
+        <figure class="moment reveal" style="--r:0.751"><img src="/assets/images/moments-listening-1200.jpg" srcset="/assets/images/moments-listening-640.jpg 640w, /assets/images/moments-listening-1200.jpg 1200w" sizes="(max-width: 760px) 92vw, 330px" alt="Brothers sitting in a row listening to a talk" width="1200" height="1598" loading="lazy"></figure>
+        <figure class="moment reveal" style="--r:1.332"><img src="/assets/images/moments-gym-1200.jpg" srcset="/assets/images/moments-gym-640.jpg 640w, /assets/images/moments-gym-1200.jpg 1200w" sizes="(max-width: 760px) 92vw, 330px" alt="Brothers gathered in a gym, some holding a basketball" width="1200" height="901" loading="lazy"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head"><h2>Recent events</h2><a class="more" href="/events/#past-events">All past events &rarr;</a></div>
+      <div id="recent-events" data-limit="3"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta reveal">
+        <h2>Stay connected</h2>
+        <p>Follow us on Instagram, TikTok and YouTube and join the WhatsApp community for the latest programming and events.</p>
+        <div class="btn-row">
+          <a class="btn gold" href="https://www.instagram.com/eliksirfoundation/" target="_blank" rel="noopener">Follow on Instagram</a>
+          <a class="btn ghost" href="https://www.tiktok.com/@eliksirfoundation" target="_blank" rel="noopener">Follow on TikTok</a>
+          <a class="btn ghost" href="https://www.youtube.com/channel/UCmz1CC2amYt0Z5W1lu52NBQ" target="_blank" rel="noopener">Watch on YouTube</a>
+          <a class="btn ghost" href="https://chat.whatsapp.com/LD5qbFkEfCp8ayqCMi9exg?mode=gi_t" target="_blank" rel="noopener">Join WhatsApp</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <h4>Eliksir Foundation</h4>
+        <p>Community programming and events. Follow along to stay up to date.</p>
+        <div class="social">
+          <a href="https://www.instagram.com/eliksirfoundation/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="0.7" fill="currentColor" stroke="none"/></svg></a>
+          <a href="https://www.tiktok.com/@eliksirfoundation" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg></a>
+          <a href="https://www.youtube.com/channel/UCmz1CC2amYt0Z5W1lu52NBQ" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg></a>
+          <a href="https://chat.whatsapp.com/LD5qbFkEfCp8ayqCMi9exg?mode=gi_t" target="_blank" rel="noopener" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2c-5.5 0-9.96 4.46-9.96 9.96 0 1.76.46 3.4 1.26 4.83L2 22l5.36-1.4a9.9 9.9 0 0 0 4.68 1.19h.01c5.5 0 9.96-4.46 9.96-9.96S17.54 2 12.04 2zm0 18.2h-.01a8.24 8.24 0 0 1-4.2-1.15l-.3-.18-3.13.82.84-3.05-.2-.31a8.22 8.22 0 0 1-1.26-4.37c0-4.55 3.7-8.25 8.26-8.25 4.55 0 8.25 3.7 8.25 8.25 0 4.56-3.7 8.24-8.25 8.24zm4.53-6.17c-.25-.12-1.46-.72-1.68-.8-.23-.08-.39-.12-.56.12-.16.25-.64.8-.79.96-.14.16-.29.18-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.23-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.14.16-.25.25-.41.08-.16.04-.31-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.4-.42-.56-.42-.14 0-.31-.02-.47-.02-.16 0-.43.06-.65.31-.23.25-.85.83-.85 2.03s.87 2.36.99 2.52c.12.16 1.71 2.61 4.14 3.66.58.25 1.03.4 1.38.51.58.18 1.11.16 1.53.1.47-.07 1.46-.6 1.66-1.17.21-.58.21-1.08.14-1.18-.06-.11-.22-.17-.47-.29z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about/">About</a></li>
+          <li><a href="/events/">Events</a></li>
+          <li><a href="/get-involved/">Get Involved</a></li>
+          <li><a href="https://www.zeffy.com/en-CA/donation-form/general-donation-318" target="_blank" rel="noopener">Donate</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:info@eliksir.to">info@eliksir.to</a></li>
+          <li>65 Treverton Dr, Scarborough, ON M1K 3S5</li>
+        </ul>
+      </div>
+    </div>
+    <p class="legal">&copy; 2026 Eliksir Foundation. All Rights Reserved.</p>
+  </div>
+</footer>
+
+<script src="/script.js?v=196ef926"></script>
+<script src="/events.js?v=6e167772"></script>
 </body>
 </html>
