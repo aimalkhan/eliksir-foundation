@@ -160,7 +160,14 @@ var PROGRAMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrID_td
       if (r && e2 && e2 >= r.start) o.end = e2;
       if (r) {
         var SPLIT = /\s+(?:-|\u2013|\u2014|to)\s+/i, dp = o.date.split(SPLIT);
-        o.timeLabel = timeText(o, parseMinutes(dp[0]), parseMinutes(o['end date'] || dp[1] || ''));
+        var sm = parseMinutes(dp[0]), em = parseMinutes(o['end date'] || dp[1] || '');
+        o.timeLabel = timeText(o, sm, em);
+        var allDay = sm === 0 && (em === null || em === 0 || em >= 23 * 60);
+        if (sm !== null && !allDay && dayGap(o.when, o.end) <= 1) {
+          o.startMin = sm;
+          o.endMin = (em !== null && (dayGap(o.when, o.end) > 0 || em > sm)) ? em : Math.min(sm + 60, 23 * 60 + 59);
+          o.shortTime = o.time || fmtMinutes(sm).replace(':00 ', ' ');
+        }
       }
       if (o.when && o.title) { o.id = slug(o); out.push(o); }
     });
@@ -222,7 +229,8 @@ var PROGRAMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrID_td
       if (ev.place) meta.appendChild(mapsLink(ev.place));
       what.appendChild(meta);
     }
-    if (ev.description) what.appendChild(el('p', '', ev.description));
+    var firstPara = (ev.description || '').split(/\n+/).filter(function (x) { return x.trim(); })[0];
+    if (firstPara) what.appendChild(el('p', '', shorten(firstPara.trim(), 220)));   // teaser only; the full text is on the event page
     var more = el('a', 'more', 'Read more →');
     more.href = '/event/?e=' + encodeURIComponent(ev.id);
     what.appendChild(more);
@@ -403,6 +411,285 @@ var PROGRAMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrID_td
     }
   }
 
+  // ----- Month calendar (events on their dates; weekly programs repeat on their weekday) -----
+  var calEl = document.getElementById('event-calendar');
+  var calEvents = null, calProgs = [], calMonth = null, calSel = null;
+  var DOW = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+  var MONTH_FULL = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  var CAL_LIMIT = 2;
+  function pad2(n) { return String(n).padStart(2, '0'); }
+  function ymd(d) { return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+
+  // "Every Wednesday", "Mon & Thu" ... -> weekday numbers (Sunday = 0)
+  function progDays(p) {
+    var out = [], re = /\b(sun|mon|tue|wed|thu|fri|sat)[a-z]*/gi, m, names = ['sun','mon','tue','wed','thu','fri','sat'];
+    while ((m = re.exec(p.day || ''))) out.push(names.indexOf(m[1].toLowerCase()));
+    return out;
+  }
+
+  // Events that last more than one day are drawn as one bar across the week (an overnight event is not).
+  function isBarEvent(ev) {
+    var gap = dayGap(ev.when, ev.end);
+    return gap >= 1 && !(ev.startMin !== undefined && gap === 1);
+  }
+  var BAR_LANES = 2;
+
+  function calItems(date) {
+    var t = today(), items = [];
+    (calEvents || []).forEach(function (ev) {
+      if (ev.when <= date && ev.end >= date) {
+        items.push({ kind: 'event', title: ev.title, time: ev.shortTime || '', place: ev.place,
+                     bar: isBarEvent(ev), date: dateText(ev), timeFull: ev.timeLabel || '', desc: ev.description || '', cta: 'View event page \u2192',
+                     href: '/event/?e=' + encodeURIComponent(ev.id), sort: ev.startMin === undefined ? -1 : ev.startMin });
+      }
+    });
+    items.sort(function (a, b) { return a.sort - b.sort; });
+    if (date >= t) {
+      calProgs.forEach(function (p) {
+        if (progDays(p).indexOf(date.getDay()) !== -1) {
+          var firstPara = (p.description || '').split(/\n+/).filter(function (x) { return x.trim(); })[0] || '';
+          items.push({ kind: 'prog', title: p.name, time: p.time || '', place: p.place,
+                       date: p.day || '', timeFull: p.time || '', desc: firstPara, cta: 'See weekly programs \u2192', href: '/events/#weekly' });
+        }
+      });
+    }
+    return items;
+  }
+
+  function calChip(it) {
+    var a = el('a', 'cal-chip cal-' + it.kind);
+    a.href = it.href;
+    a.title = (it.time ? it.time + ' \u00B7 ' : '') + it.title;
+    a.addEventListener('click', function (e) { openFromLink(e, it, a); });
+    if (it.time) a.appendChild(el('span', 'cal-t', it.time));
+    a.appendChild(el('span', 'cal-n', it.title));
+    return a;
+  }
+
+  // ----- Popover with the event's details and a link to its page -----
+  var calPop = null, calPopFor = null;
+  function closeCalPop(restoreFocus) {
+    if (calPop) { calPop.remove(); calPop = null; }
+    if (calPopFor && restoreFocus && document.body.contains(calPopFor)) calPopFor.focus();
+    calPopFor = null;
+  }
+  function openFromLink(e, it, anchor) {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button) return;   // let "open in new tab" work
+    e.preventDefault(); e.stopPropagation();
+    openCalPop(it, anchor);
+  }
+  function shorten(text, n) {
+    if (text.length <= n) return text;
+    return text.slice(0, n).replace(/\s+\S*$/, '') + '…';
+  }
+  function openCalPop(it, anchor) {
+    closeCalPop(false);
+    var pop = el('div', 'cal-pop cal-pop-' + it.kind);
+    pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', it.title); pop.tabIndex = -1;
+    var x = el('button', 'cal-pop-x', '×'); x.type = 'button'; x.setAttribute('aria-label', 'Close');
+    x.addEventListener('click', function () { closeCalPop(true); });
+    pop.appendChild(x);
+    pop.appendChild(el('span', 'cal-pop-kind', it.kind === 'prog' ? 'Weekly program' : 'Event'));
+    pop.appendChild(el('h4', '', it.title));
+    var when = [it.date, it.timeFull].filter(Boolean).join(' · ');
+    if (when) pop.appendChild(el('p', 'cal-pop-line', when));
+    if (it.place) { var loc = el('p', 'cal-pop-line'); loc.appendChild(mapsLink(it.place)); pop.appendChild(loc); }
+    if (it.desc) pop.appendChild(el('p', 'cal-pop-desc', shorten(it.desc, 230)));
+    var go = el('a', 'btn cal-pop-go', it.cta); go.href = it.href;
+    pop.appendChild(go);
+    document.body.appendChild(pop);
+    calPop = pop; calPopFor = anchor;
+
+    if (window.matchMedia('(max-width:700px)').matches) {
+      pop.classList.add('sheet');
+    } else {
+      var r = anchor.getBoundingClientRect(), w = pop.offsetWidth, h = pop.offsetHeight;
+      var left = Math.min(Math.max(8, r.left), window.innerWidth - w - 8);
+      var top = r.bottom + 6;
+      if (top + h > window.innerHeight && r.top - 6 - h > 0) top = r.top - 6 - h;
+      pop.style.left = (left + window.pageXOffset) + 'px';
+      pop.style.top = (top + window.pageYOffset) + 'px';
+    }
+    pop.focus({ preventScroll: true });
+  }
+  if (calEl) {
+    document.addEventListener('click', function (e) { if (calPop && !calPop.contains(e.target)) closeCalPop(false); });
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && calPop) closeCalPop(true); });
+  }
+
+  function showCalDay(date) {
+    calSel = ymd(date);
+    Array.prototype.forEach.call(calEl.querySelectorAll('.cal-cell'), function (c) {
+      c.classList.toggle('sel', c.getAttribute('data-date') === calSel);
+    });
+    closeCalPop(false);
+    var panel = calEl.querySelector('.cal-day');
+    panel.textContent = '';
+    panel.hidden = false;
+    panel.appendChild(el('h4', '', date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })));
+    var items = calItems(date);
+    if (!items.length) { panel.appendChild(el('p', 'meta', 'Nothing scheduled.')); return; }
+    var ul = el('ul', 'cal-day-list');
+    items.forEach(function (it) {
+      var li = el('li', 'cal-' + it.kind);
+      var a = el('a', '', it.title); a.href = it.href;
+      a.addEventListener('click', function (e) { openFromLink(e, it, a); });
+      li.appendChild(a);
+      var bits = [it.time, it.place].filter(Boolean).join(' \u00B7 ');
+      if (bits) li.appendChild(el('span', 'meta', bits));
+      ul.appendChild(li);
+    });
+    panel.appendChild(ul);
+  }
+
+  function renderCalendar() {
+    if (!calEl || !calEvents) return;
+    closeCalPop(false);
+    var t = today();
+    if (!calMonth) calMonth = new Date(t.getFullYear(), t.getMonth(), 1);
+    calEl.textContent = '';
+
+    var head = el('div', 'cal-head');
+    function navBtn(label, text, step) {
+      var b = el('button', 'cal-nav', text); b.type = 'button'; b.setAttribute('aria-label', label);
+      b.addEventListener('click', function () { calMonth = new Date(calMonth.getFullYear(), calMonth.getMonth() + step, 1); calSel = null; renderCalendar(); });
+      return b;
+    }
+    head.appendChild(navBtn('Previous month', '‹', -1));
+    head.appendChild(el('h3', 'cal-title', MONTH_FULL[calMonth.getMonth()] + ' ' + calMonth.getFullYear()));
+    head.appendChild(navBtn('Next month', '›', 1));
+    var todayBtn = el('button', 'cal-today', 'Today'); todayBtn.type = 'button';
+    todayBtn.addEventListener('click', function () { calMonth = new Date(t.getFullYear(), t.getMonth(), 1); calSel = null; renderCalendar(); });
+    head.appendChild(todayBtn);
+    calEl.appendChild(head);
+
+    var grid = el('div', 'cal-grid');
+    var dows = el('div', 'cal-weekhead');
+    DOW.forEach(function (d) { dows.appendChild(el('div', 'cal-dow', d)); });
+    grid.appendChild(dows);
+
+    var y = calMonth.getFullYear(), m = calMonth.getMonth();
+    var offset = (new Date(y, m, 1).getDay() + 6) % 7;
+    var weeks = Math.ceil((offset + new Date(y, m + 1, 0).getDate()) / 7);
+    var barEvents = calEvents.filter(isBarEvent);
+
+    for (var w = 0; w < weeks; w++) {
+      (function (w) {
+        var wkStart = new Date(y, m, 1 - offset + w * 7), wkEnd = new Date(y, m, 1 - offset + w * 7 + 6);
+        var week = el('div', 'cal-week');
+
+        // Bars: the part of each multi-day event that falls in this week, stacked in lanes.
+        var segs = [];
+        barEvents.forEach(function (ev) {
+          if (ev.end < wkStart || ev.when > wkEnd) return;
+          segs.push({ ev: ev, s: Math.max(0, dayGap(wkStart, ev.when)), e: Math.min(6, dayGap(wkStart, ev.end)),
+                      cl: ev.when < wkStart, cr: ev.end > wkEnd });
+        });
+        segs.sort(function (a, b) { return a.s - b.s || (b.e - b.s) - (a.e - a.s) || a.ev.when - b.ev.when; });
+        var laneEnd = [];
+        segs.forEach(function (sg) {
+          var l = 0;
+          while (laneEnd[l] !== undefined && laneEnd[l] >= sg.s) l++;
+          laneEnd[l] = sg.e; sg.lane = l;
+        });
+        var shown = segs.filter(function (sg) { return sg.lane < BAR_LANES; });
+        var lanes = shown.length ? Math.max.apply(null, shown.map(function (sg) { return sg.lane; })) + 1 : 0;
+        var hiddenOn = [0, 0, 0, 0, 0, 0, 0];
+        segs.forEach(function (sg) { if (sg.lane >= BAR_LANES) for (var c = sg.s; c <= sg.e; c++) hiddenOn[c]++; });
+
+        for (var c = 0; c < 7; c++) {
+          (function (date, col) {
+            var cell = el('div', 'cal-cell' + (date.getMonth() !== m ? ' out' : '') + (+date === +t ? ' today' : ''));
+            cell.setAttribute('data-date', ymd(date));
+            cell.appendChild(el('span', 'cal-num', String(date.getDate())));
+            if (lanes) { var sp = el('div', 'cal-spacer'); sp.style.height = (lanes * 26) + 'px'; cell.appendChild(sp); }
+            var items = calItems(date), box = el('div', 'cal-items'), singles = 0;
+            items.forEach(function (it) {
+              var chip = calChip(it);
+              if (it.bar) chip.classList.add('bar-dot');              // phones: a dot instead of a bar
+              else if (singles++ >= CAL_LIMIT) chip.classList.add('extra');
+              box.appendChild(chip);
+            });
+            cell.appendChild(box);
+            var extra = Math.max(0, singles - CAL_LIMIT) + hiddenOn[col];
+            if (extra) {
+              var more = el('button', 'cal-more', '+ ' + extra + ' more'); more.type = 'button';
+              more.addEventListener('click', function (e) { e.stopPropagation(); showCalDay(date); });
+              cell.appendChild(more);
+            }
+            cell.addEventListener('click', function (e) { if (!e.target.closest('a,button')) showCalDay(date); });
+            week.appendChild(cell);
+          })(new Date(y, m, 1 - offset + w * 7 + c), c);
+        }
+
+        shown.forEach(function (sg) {
+          var it = calItems(sg.ev.when).filter(function (x) { return x.title === sg.ev.title && x.bar; })[0];
+          if (!it) return;
+          var bar = el('a', 'cal-bar' + (sg.cl ? ' cl' : '') + (sg.cr ? ' cr' : ''), sg.ev.title);
+          bar.href = it.href; bar.title = sg.ev.title;
+          var span = sg.e - sg.s + 1;
+          bar.style.left = 'calc(' + (sg.s * 100 / 7) + '% + ' + (sg.cl ? 0 : 3) + 'px)';
+          bar.style.width = 'calc(' + (span * 100 / 7) + '% - ' + ((sg.cl ? 0 : 3) + (sg.cr ? 0 : 3)) + 'px)';
+          bar.style.top = (38 + sg.lane * 26) + 'px';
+          bar.addEventListener('click', function (e) { openFromLink(e, it, bar); });
+          week.appendChild(bar);
+        });
+        grid.appendChild(week);
+      })(w);
+    }
+    calEl.appendChild(grid);
+
+    var panel = el('div', 'cal-day card'); panel.hidden = true;
+    calEl.appendChild(panel);
+    var sel = calSel ? parseOne(calSel) : null;
+    if (!sel && t.getFullYear() === y && t.getMonth() === m) sel = t;
+    if (sel && sel.getMonth() === m) showCalDay(sel);
+
+    var hasUpcoming = calEvents.some(function (e) { return e.end >= t; });
+    if (hasUpcoming) {
+      var foot = el('div', 'cal-foot');
+      var dl = el('button', 'btn ghost', 'Download calendar (.ics)'); dl.type = 'button';
+      dl.addEventListener('click', downloadIcs);
+      foot.appendChild(dl);
+      foot.appendChild(el('span', 'meta', 'Opens in Apple Calendar, Google Calendar and Outlook.'));
+      calEl.appendChild(foot);
+    }
+  }
+
+  // ----- .ics file of upcoming events (times are local, no time zone attached) -----
+  function icsText(s) { return String(s || '').replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\r?\n/g, '\\n'); }
+  function icsDate(d) { return d.getFullYear() + pad2(d.getMonth() + 1) + pad2(d.getDate()); }
+  function icsClock(min) { return pad2(Math.floor(min / 60)) + pad2(min % 60) + '00'; }
+  function icsFold(line) {
+    var out = [];
+    while (line.length > 60) { out.push(line.slice(0, 60)); line = ' ' + line.slice(60); }
+    out.push(line);
+    return out.join('\r\n');
+  }
+  function downloadIcs() {
+    var t = today(), stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
+    var L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Eliksir Foundation//Events//EN', 'CALSCALE:GREGORIAN', 'X-WR-CALNAME:Eliksir Foundation'];
+    calEvents.filter(function (e) { return e.end >= t; }).sort(function (a, b) { return a.when - b.when; }).forEach(function (ev) {
+      L.push('BEGIN:VEVENT', 'UID:' + ev.id + '@eliksir.to', 'DTSTAMP:' + stamp);
+      if (ev.startMin !== undefined) {
+        L.push('DTSTART:' + icsDate(ev.when) + 'T' + icsClock(ev.startMin), 'DTEND:' + icsDate(ev.end) + 'T' + icsClock(ev.endMin));
+      } else {
+        var after = new Date(ev.end.getFullYear(), ev.end.getMonth(), ev.end.getDate() + 1);
+        L.push('DTSTART;VALUE=DATE:' + icsDate(ev.when), 'DTEND;VALUE=DATE:' + icsDate(after));
+      }
+      L.push('SUMMARY:' + icsText(ev.title));
+      if (ev.place) L.push('LOCATION:' + icsText(ev.place));
+      var url = location.origin + '/event/?e=' + encodeURIComponent(ev.id);
+      L.push('DESCRIPTION:' + icsText((ev.description ? ev.description + '\n\n' : '') + url), 'URL:' + url, 'END:VEVENT');
+    });
+    L.push('END:VCALENDAR');
+    var blob = new Blob([L.map(icsFold).join('\r\n') + '\r\n'], { type: 'text/calendar;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = 'eliksir-events.ics';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+  }
+
   // ----- Weekly programs -----
   function renderPrograms(rows) {
     var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
@@ -414,6 +701,7 @@ var PROGRAMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrID_td
       if (o.name) items.push(o);
     });
     if (!items.length) return;                 // keep what is already on the page
+    calProgs = items; renderCalendar();
     progEl.textContent = '';
     items.forEach(function (p) {
       var card = el('article', 'routine rise');
@@ -455,6 +743,7 @@ var PROGRAMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrID_td
         if (rows.length < 1) throw new Error('empty');
         var events = toEvents(rows);
         if (detailEl) renderDetail(events); else renderLists(events);
+        calEvents = events; renderCalendar();
       })
       .catch(function () {
         // The lists stay empty; the detail page says the event was not found.

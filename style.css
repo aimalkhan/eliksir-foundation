@@ -334,3 +334,82 @@ section{padding:clamp(28px,5vw,48px) 0;}
 }
 .band{background:rgba(233,225,247,0.5);margin:clamp(12px,3vw,28px) 0;}
 #recent-events .past-list{margin-top:0;border-top:1px solid var(--line);}
+
+/* ---- Month calendar ---- */
+.cal-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap;}
+.cal-title{margin:0 8px;font-size:1.35rem;min-width:11ch;text-align:center;}
+.cal-nav,.cal-today{font:inherit;cursor:pointer;border:1.5px solid var(--indigo);background:transparent;color:var(--indigo);border-radius:999px;transition:background .2s ease,color .2s ease;}
+.cal-nav{width:38px;height:38px;font-size:1.4rem;line-height:1;padding:0 0 3px;}
+.cal-today{padding:7px 16px;font-weight:600;font-size:.9rem;margin-left:auto;}
+.cal-nav:hover,.cal-today:hover{background:var(--indigo);color:#fff;}
+.cal-grid{border-top:1px solid var(--line);border-left:1px solid var(--line);background:rgba(255,255,255,.55);}
+.cal-weekhead,.cal-week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));}
+.cal-week{position:relative;}
+.cal-dow{padding:8px 10px;font-size:.78rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-soft);border-right:1px solid var(--line);border-bottom:1px solid var(--line);background:#E9E1F7;}
+.cal-cell{min-height:128px;padding:6px 6px 8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);cursor:pointer;display:flex;flex-direction:column;gap:4px;min-width:0;}
+.cal-cell:hover{background:rgba(255,255,255,.9);}
+.cal-cell.out{background:rgba(233,225,247,.35);}
+.cal-cell.out .cal-num{color:rgba(86,76,116,.5);}
+.cal-cell.sel{outline:2px solid var(--indigo);outline-offset:-2px;}
+.cal-num{font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--indigo-deep);width:28px;height:28px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;}
+.cal-cell.today .cal-num{background:var(--gold);color:var(--ink);}
+.cal-items{display:flex;flex-direction:column;gap:4px;min-width:0;}
+.cal-chip{display:block;padding:3px 6px;border-radius:6px;font-size:.78rem;line-height:1.3;text-decoration:none;color:var(--ink);border-left:3px solid var(--indigo);background:rgba(59,20,186,.09);min-width:0;}
+.cal-chip:hover{background:rgba(59,20,186,.18);}
+.cal-chip.cal-prog{border-left-color:var(--gold);background:rgba(234,178,54,.2);}
+.cal-chip.cal-prog:hover{background:rgba(234,178,54,.35);}
+.cal-t{display:block;font-size:.72rem;color:var(--ink-soft);}
+.cal-n{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-weight:500;}
+.cal-cell.open .cal-n{-webkit-line-clamp:unset;}
+.cal-chip.extra{display:none;}
+.cal-cell.open .cal-chip.extra{display:block;}
+.cal-more{margin-top:auto;font:inherit;font-size:.78rem;font-weight:600;color:var(--indigo);background:none;border:0;border-top:1px solid var(--line);padding:5px 0 0;text-align:left;cursor:pointer;}
+.cal-more:hover{text-decoration:underline;}
+.cal-day{margin-top:16px;padding:18px 22px;}
+.cal-day h4{margin:0 0 8px;font-family:'Fraunces',serif;font-size:1.1rem;}
+.cal-day-list{list-style:none;margin:0;padding:0;}
+.cal-day-list li{padding:8px 0 8px 12px;border-left:3px solid var(--indigo);margin-bottom:6px;display:flex;flex-direction:column;}
+.cal-day-list li.cal-prog{border-left-color:var(--gold);}
+.cal-day-list a{font-weight:600;text-decoration:none;}
+.cal-day-list a:hover{text-decoration:underline;}
+.cal-foot{margin-top:18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.cal-foot .meta{color:var(--ink-soft);font-size:.9rem;}
+@media (max-width:700px){
+  .cal-today{margin-left:0;}
+  .cal-cell{min-height:58px;padding:4px 2px;align-items:center;}
+  .cal-dow{padding:6px 2px;text-align:center;font-size:.68rem;letter-spacing:.02em;}
+  .cal-items{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:3px;}
+  .cal-chip,.cal-chip.extra{display:block;width:8px;height:8px;padding:0;border-radius:50%;border:0;background:var(--indigo);overflow:hidden;}
+  .cal-chip.cal-prog{background:var(--gold);}
+  .cal-chip span{display:none;}
+  .cal-more{display:none;}
+}
+
+/* ---- Calendar popover ---- */
+.cal-pop{position:absolute;z-index:60;width:320px;max-width:calc(100vw - 16px);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 14px 40px rgba(38,16,125,.22);padding:18px 20px 20px;border-top:4px solid var(--indigo);}
+.cal-pop.cal-pop-prog{border-top-color:var(--gold);}
+.cal-pop:focus{outline:none;}
+.cal-pop-x{position:absolute;top:6px;right:8px;width:32px;height:32px;border:0;background:none;font-size:1.6rem;line-height:1;color:var(--ink-soft);cursor:pointer;border-radius:50%;}
+.cal-pop-x:hover{background:#EDE4FA;color:var(--indigo-deep);}
+.cal-pop-kind{display:block;font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--indigo);margin-bottom:2px;}
+.cal-pop h4{margin:0 28px 8px 0;font-family:'Fraunces',serif;font-size:1.15rem;line-height:1.25;}
+.cal-pop-line{margin:0 0 4px;font-size:.92rem;color:var(--ink-soft);}
+.cal-pop-desc{margin:10px 0 14px;font-size:.95rem;}
+.cal-pop-go{display:inline-flex;margin-top:12px;padding:9px 18px;font-size:.92rem;}
+.cal-pop-desc + .cal-pop-go{margin-top:0;}
+.cal-pop.sheet{position:fixed;left:12px;right:12px;bottom:12px;top:auto;width:auto;max-width:none;max-height:80vh;overflow:auto;}
+
+/* ---- Multi-day bars ---- */
+.cal-spacer{flex:none;}
+.cal-bar{position:absolute;z-index:2;height:22px;line-height:22px;padding:0 9px;font-size:.78rem;font-weight:500;color:#fff;background:var(--indigo);border-radius:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-decoration:none;box-shadow:0 1px 2px rgba(38,16,125,.25);}
+.cal-bar:hover{background:var(--indigo-deep);}
+.cal-bar.cl{border-radius:0 6px 6px 0;}
+.cal-bar.cr{border-radius:6px 0 0 6px;}
+.cal-bar.cl.cr{border-radius:0;}
+.cal-bar.cl::before{content:"\25C2\00A0";opacity:.8;}
+.cal-bar.cr::after{content:"\00A0\25B8";opacity:.8;}
+.cal-chip.bar-dot{display:none;}
+@media (max-width:700px){
+  .cal-bar,.cal-spacer{display:none;}
+  .cal-chip.bar-dot{display:block;}
+}
