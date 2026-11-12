@@ -15,6 +15,10 @@ var EVENTS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrID_td2F
 // Link (optional): a sign-up or info page. Leave it blank and no button is shown.
 var PROGRAMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrID_td2FVUAUGqR-sYilLCTQ6JO9o2BKedGrPMJG5aeVcjOpgg6kNecc13VwkmpmWMERChwxp2hw-/pub?gid=1563272143&single=true&output=csv";
 
+// SHOW ON WEBSITE (both tabs): add a column with this heading and tick the box on each row you
+//   want shown. Unticked rows are hidden everywhere (lists, calendar, event page, .ics).
+//   If a tab has no such column, every row is shown.
+//
 // EVENTS TAB. Sheet columns (row 1 headings; capital letters don't matter). Use any of these:
 //   Start Date, End Date, Time, Title, Address, Description, Poster, Zeffy Link
 // Start Date / End Date: e.g. 12/18/2026, 2026-12-18 or "December 18, 2026".
@@ -144,12 +148,21 @@ var PROGRAMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrID_td
     return ymd + '-' + ev.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
   }
 
+  // "Show on website" column (a tick box in Google Sheets exports as TRUE / FALSE).
+  // If the column exists, only ticked rows are used. If it does not exist, every row is used.
+  var SHOW_COL = 'show on website';
+  function isShown(o, hasCol) {
+    return !hasCol || /^(true|yes|y|1|x)$/i.test((o[SHOW_COL] || '').trim());
+  }
+
   function toEvents(rows) {
     var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
+    var hasShowCol = head.indexOf(SHOW_COL) !== -1;
     var out = [];
     rows.slice(1).forEach(function (r) {
       var o = {};
       head.forEach(function (h, i) { o[h] = (r[i] || '').trim(); });
+      if (!isShown(o, hasShowCol)) return;
       o.place = o.address || o.location || o.place || '';
       o.photo = o.poster || o.photo || '';
       o.zeffy = o['zeffy link'] || o.zeffy || '';
@@ -693,14 +706,20 @@ var PROGRAMS_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSrID_td
   // ----- Weekly programs -----
   function renderPrograms(rows) {
     var head = rows[0].map(function (h) { return h.trim().toLowerCase(); });
-    var items = [];
+    var items = [], hasShowCol = head.indexOf(SHOW_COL) !== -1;
     rows.slice(1).forEach(function (r) {
       var o = {};
       head.forEach(function (h, i) { o[h] = (r[i] || '').trim(); });
       o.place = o.location || o.address || o.place || '';
-      if (o.name) items.push(o);
+      if (o.name && isShown(o, hasShowCol)) items.push(o);
     });
-    if (!items.length) return;                 // keep what is already on the page
+    if (!items.length) {
+      if (!hasShowCol) return;                 // an empty or odd sheet: keep what is already on the page
+      calProgs = []; renderCalendar();         // everything is switched off: show no programs
+      var sec = progEl.closest('section');
+      if (sec) sec.remove();
+      return;
+    }
     calProgs = items; renderCalendar();
     progEl.textContent = '';
     items.forEach(function (p) {
